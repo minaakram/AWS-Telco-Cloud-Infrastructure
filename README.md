@@ -1,86 +1,123 @@
-🌐 Telco Cloud: High-Availability Subscriber Management
-📋 Project Overview
+# 🌐 Telco Cloud: High-Availability Subscriber Management
 
-This project demonstrates a robust 3-Tier Cloud Architecture designed for Telecommunications Service Providers. It features a Virtual Network Function (VNF) integrated with Auto Scaling to ensure the Subscriber Management Portal remains available under any traffic load.
+## 📋 Project Overview
 
-🏗️ Architecture Design
+This project demonstrates a robust **3-Tier Cloud Architecture** designed for Telecommunications Service Providers.  
 
-The infrastructure is built within a custom VPC to provide maximum security and logical isolation:
+It simulates a **Virtual Network Function (VNF)** integrated with **Auto Scaling**, ensuring that the Subscriber Management Portal remains highly available under fluctuating traffic loads.
 
-Public Tier: Hosts the Application Load Balancer (ALB) and Internet Gateway.
+The implementation focuses on High Availability, Elasticity, Security, and Observability using AWS core services.
 
-Private Tier (App): Hosts the EC2 Web Servers (VNF Portal) across multiple instances.
+---
 
-Private Tier (Data): Hosts the Amazon RDS (MySQL) database, isolated from public access.
+## 🏗️ Architecture Design
 
-Elasticity: An Auto Scaling Group (ASG) monitors demand and adjusts the number of servers automatically.
+The infrastructure is deployed inside a custom **Amazon VPC** to ensure strong isolation and secure network segmentation.
 
-🖥️ Application Deployment (EC2 Configuration)
+### 🔹 Public Tier
+- Application Load Balancer (ALB)
+- Internet Gateway  
+Handles and distributes incoming traffic across application instances.
 
-The VNF portal was deployed on Amazon Linux 2023 instances.
-Using SSH access, I configured:
+### 🔹 Private Tier (Application Layer)
+- EC2 Web Servers (Amazon Linux 2023)
+- Managed by an Auto Scaling Group (ASG)
 
-Apache (httpd)
+The application layer dynamically scales based on CPU utilization.
 
-PHP 8.x
+### 🔹 Private Tier (Data Layer)
+- Amazon RDS (MySQL)
+- No public access
+- Secured within private subnets
 
-Secure database connection (RDS)
+### 🔹 Elasticity Strategy
+- Desired Capacity: 2 instances
+- Maximum Capacity: 3 instances
+- Scaling Metric: CPUUtilization
 
-Portal logic deployment inside /var/www/html/
+---
 
-Below is a snapshot showing the EC2 instance configuration and PHP deployment process:
+## 🗺️ Infrastructure Resource Map
 
+![Resource Map](./Resourse%20map.png)
 
-Manual deployment and configuration of the VNF Portal on Amazon Linux 2023.
+*Detailed visualization of the VPC, subnets, routing, and gateways.*
 
-🗺️ Infrastructure Resource Map
+---
 
+## 🖥️ Application Deployment (EC2 Configuration)
 
-Detailed visual of the VPC, Subnets, and Gateways.
+The VNF portal was deployed on **Amazon Linux 2023** instances.
 
-🚀 Key Features & Implementation
-1. Auto Scaling & High Availability
+Using SSH access, the following components were configured:
 
-The system is configured to maintain a Desired Capacity of 2 instances, with the ability to scale up to 3 based on CPU demand.
+- Apache (httpd)
+- PHP 8.x
+- Secure RDS database connection
+- Portal logic inside `/var/www/html/`
 
+![EC2 Deployment](./ec2%20server.png)
 
-Evidence of 3 running instances managed by the ASG during peak load.
+*Manual configuration and deployment of the VNF portal.*
 
+---
 
-Auto Scaling Group status showing successful capacity management.
+## 🚀 Key Features & Implementation
 
-2. VNF User Interface
+### 1️⃣ Auto Scaling & High Availability
 
-The portal provides real-time database connectivity status and subscriber management tools.
+The Auto Scaling Group maintains a minimum of two instances and scales up automatically during peak CPU usage.
 
+![Instances Status](./Instances%20(3)%20.png)
 
-The front-end interface of the Telecom Service Management.
+*Three running EC2 instances during peak load.*
 
-3. Real-time Monitoring (Observability)
+![ASG Configuration](./Auto%20Scaling%20groups.png)
 
-Integrated with Amazon CloudWatch to track CPU Utilization and scaling behavior.
+*Auto Scaling Group configuration and capacity management.*
 
+---
 
-CloudWatch Metrics: Visualizing CPU activity and system stability.
+### 2️⃣ VNF User Interface
 
-📁 Repository Structure
+The portal simulates a telecom subscriber management dashboard.
 
-index.php: The main portal logic for subscriber management.
+Features:
+- Real-time database connection status
+- Subscriber data simulation
+- Telecom-style interface
 
-config.php: Secure database connection configuration.
+![VNF Interface](./VNF%20Interface.png)
 
-cloudwatch.png: CloudWatch CPU metrics screenshot.
+---
 
-Resourse map.png: Infrastructure design overview.
+### 3️⃣ Real-time Monitoring (Observability)
 
-ec2 server.png: EC2 deployment and configuration snapshot.
+Integrated with **Amazon CloudWatch** to monitor:
 
-🛠️ Tech Stack
+- CPU Utilization
+- Instance health
+- Scaling activity
 
-Cloud Provider: AWS (VPC, EC2, RDS, ASG, CloudWatch)
+CPUUtilization was used as the primary scaling trigger.
 
-Backend: PHP 8.x
+![CloudWatch Metrics](./cloudwatch.png)
 
-Database: MySQL (Amazon RDS)
+---
 
-Web Server: Apache (httpd)
+## 📁 Repository Structure
+
+```bash
+AWS-Telco-Cloud-Infrastructure/
+│
+├── README.md
+├── index.php
+├── config.php
+│
+├── Resourse map.png
+├── ec2 server.png
+├── Instances (3) .png
+├── Auto Scaling groups.png
+├── VNF Interface.png
+└── cloudwatch.png
+```
